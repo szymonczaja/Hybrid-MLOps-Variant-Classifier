@@ -34,14 +34,15 @@ This project implements an **automated classification pipeline** based on the of
 
 If you want to run this application locally in a containerized environment, follow these steps:
 
-### 1. Build the Docker Image
-Navigate to the project directory in your terminal and run:
 ```bash
+1. Build the Docker Image
+Navigate to the project directory in your terminal and run:
+
 docker build -t acmg-classifier .
 
-### 2. Run the Container
+2. Run the Container
 
 docker run -p 8000:8000 acmg-classifier
 
-### 3. Access the App
+3. Access the App
 Open your browser and go to: http://localhost:8000/docs
