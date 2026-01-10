@@ -11,7 +11,7 @@ Genetic variant interpretation is a significant bottleneck in precision medicine
 ##  Project Overview
 This project implements an **automated classification pipeline** based on the official ACMG guidelines. It processes genetic variant data, applies specific evidence criteria (e.g., population frequency, computational predictions, functional studies), and determines the final pathogenicity status without manual intervention.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 * **Language:** Python 3.x
 * **Data Manipulation:** Pandas, NumPy
 * **Containerization:** Docker
