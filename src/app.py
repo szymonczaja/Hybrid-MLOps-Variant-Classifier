@@ -25,7 +25,7 @@ except ImportError:
 async def lifespan(app: FastAPI):
     global model
     print("\n" + "="*50)
-    print("🚀 START: Inicjalizacja serwisu ACMG...")
+    print("START: Inicjalizacja serwisu ACMG...")
 
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__)) 
@@ -46,7 +46,7 @@ async def lifespan(app: FastAPI):
             print(f"BŁĄD: Nie znaleziono pliku {model_path}")
             
     except Exception as e:
-        print(f"KRYTYCZNY BŁĄD ładowania modelu: {e}")
+        print(f"BŁĄD ładowania modelu: {e}")
 
     print("="*50 + "\n")
     
