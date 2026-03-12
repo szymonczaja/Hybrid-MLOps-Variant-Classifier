@@ -1,52 +1,36 @@
 import pandas as pd
 import joblib
-import sys
 import os 
 from fastapi import FastAPI, HTTPException
 from contextlib import asynccontextmanager
+from sklearn import set_config
 from pydantic import BaseModel
 from typing import Optional, Union
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-try:
-    from src.fe_transformers import (
+from dotenv import load_dotenv
+from fe_transformers import (
         GeneRiskEstimator, AddAcmgRules, OriginRareLabelEncoder, 
         ZeroImputer, VariantsAtTributeExtractor, ImpactScoreEncoder
     )
-except ImportError:
-    from fe_transformers import (
-        GeneRiskEstimator, AddAcmgRules, OriginRareLabelEncoder, 
-        ZeroImputer, VariantsAtTributeExtractor, ImpactScoreEncoder
-    )
-
+set_config(transform_output="pandas")
+load_dotenv()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global model
-    print("\n" + "="*50)
-    print("START: Inicjalizacja serwisu ACMG...")
+    print("START: Downloading model...")
 
     try:
-        current_dir = os.path.dirname(os.path.abspath(__file__)) 
-        root_dir = os.path.dirname(current_dir) 
-        
-        model_path = os.path.join(root_dir, "model.pkl") 
-        
-        if not os.path.exists(model_path):
-            model_path = os.path.join(current_dir, "model.pkl")
+        import sys
+        import fe_transformers
+        sys.modules['src.fe_transformers'] = fe_transformers
+        sys.modules['src'] = sys.modules[__name__]
+        model_path='model.pkl'
+        model = joblib.load(model_path)
+        print('MODEL IS READY!')
 
-        print(f"Szukam modelu w: {model_path}")
-
-        if os.path.exists(model_path):
-            model = joblib.load(model_path)
-            print("Model załadowany POMYŚLNIE!")
-            print("Swagger UI dostępny pod: http://127.0.0.1:8000/docs")
-        else:
-            print(f"BŁĄD: Nie znaleziono pliku {model_path}")
-            
     except Exception as e:
-        print(f"BŁĄD ładowania modelu: {e}")
+        print(f"ERROR: {e}")
+        model = None
 
     print("="*50 + "\n")
     

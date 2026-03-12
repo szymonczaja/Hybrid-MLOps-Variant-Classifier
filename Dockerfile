@@ -1,17 +1,13 @@
-FROM python:3.11
-ENV PYTHONUNBUFFERED=1
+FROM python:3.11-slim
+
 WORKDIR /app
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
-
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY src/ src/
+COPY app.py .
+COPY fe_transformers.py .
 COPY model.pkl .
 
-EXPOSE 8000
-CMD ["uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "8000"]
+RUN pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 80
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
