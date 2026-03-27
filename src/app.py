@@ -36,7 +36,7 @@ async def lifespan(app: FastAPI):
     
     yield  
     
-    print("\nZamykanie serwisu...")
+    print("\n Shutting down the service...")
     model = None
 
 app = FastAPI(title='ACMG Variant Classifier', version='1.0', lifespan=lifespan)
